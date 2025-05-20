@@ -11,6 +11,9 @@ type KeyMap struct {
 	Collapse key.Binding
 	Help     key.Binding
 	Quit     key.Binding
+	Search   key.Binding
+	Submit   key.Binding
+	Next     key.Binding
 }
 
 func NewKeyMap(c *KeyConfig) KeyMap {
@@ -36,6 +39,15 @@ func NewKeyMap(c *KeyConfig) KeyMap {
 	if len(c.QuitKeys) != 0 {
 		keys.Quit.SetKeys(c.QuitKeys...)
 	}
+	if len(c.SearchKeys) != 0 {
+		keys.Search.SetKeys(c.SearchKeys...)
+	}
+	if len(c.SubmitKeys) != 0 {
+		keys.Submit.SetKeys(c.SubmitKeys...)
+	}
+	if len(c.NextKeys) != 0 {
+		keys.Next.SetKeys(c.NextKeys...)
+	}
 	return keys
 }
 
@@ -59,8 +71,8 @@ func DefaultKeyMap() KeyMap {
 			key.WithHelp("↑", "up"),
 		),
 		Collapse: key.NewBinding(
-			key.WithKeys("tab", "enter"),
-			key.WithHelp("tab/enter", "collapse/expand"),
+			key.WithKeys("tab"),
+			key.WithHelp("tab", "collapse/expand"),
 		),
 		Help: key.NewBinding(
 			key.WithKeys("?"),
@@ -69,6 +81,18 @@ func DefaultKeyMap() KeyMap {
 		Quit: key.NewBinding(
 			key.WithKeys("q", "esc"),
 			key.WithHelp("esc", "return"),
+		),
+		Search: key.NewBinding(
+			key.WithKeys("/"),
+			key.WithHelp("/", "search for matching nodes"),
+		),
+		Submit: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "submit entry"),
+		),
+		Next: key.NewBinding(
+			key.WithKeys("n"),
+			key.WithHelp("n", "go to next match"),
 		),
 	}
 }

@@ -310,7 +310,7 @@ func TestDFS(t *testing.T) {
 		keys = append(keys, n.Key)
 		return nil
 	}
-	err := DFS([]*Node{n}, f, 0)
+	err := DFS([]*Node{n}, f, 0, false)
 	assert.NoError(t, err)
 	assert.ElementsMatch(t, []string{"foo", "bar", "baz", "bad"}, keys)
 }

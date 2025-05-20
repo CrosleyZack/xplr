@@ -19,6 +19,8 @@ type Node struct {
 	Value string
 	// Children is the list of children nodes
 	Children []*Node
+	// Parent of this node
+	Parent *Node
 	// Expand indicates if the node is expanded
 	Expand bool
 }
@@ -126,6 +128,9 @@ func makeNode(key string, value any, layer uint, displayLayers uint) *Node {
 		node.Value = node.ShortString()
 	case map[string]any:
 		node.Children = makeTree(value.(map[string]any), layer+1, displayLayers)
+		for _, n := range node.Children {
+			n.Parent = node
+		}
 		node.Value = node.ShortString()
 	}
 	return node
@@ -140,13 +145,13 @@ func spacerToken(first bool) string {
 }
 
 // DFS perform depth first search on tree and run f on nodes
-func DFS(nodes []*Node, f func(*Node, int) error, layer int) error {
+func DFS(nodes []*Node, f func(*Node, int) error, layer int, ignoreExpand bool) error {
 	for _, node := range nodes {
 		if err := f(node, layer); err != nil {
 			return err
 		}
-		if node.Children != nil && node.Expand {
-			if err := DFS(node.Children, f, layer+1); err != nil {
+		if node.Children != nil && (ignoreExpand || node.Expand) {
+			if err := DFS(node.Children, f, layer+1, ignoreExpand); err != nil {
 				return err
 			}
 		}

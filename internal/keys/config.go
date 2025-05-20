@@ -14,6 +14,9 @@ type KeyConfig struct {
 	CollapseKeys []string
 	HelpKeys     []string
 	QuitKeys     []string
+	SearchKeys   []string
+	SubmitKeys   []string
+	NextKeys     []string
 }
 
 func NewConfig(data []byte) (*KeyConfig, error) {

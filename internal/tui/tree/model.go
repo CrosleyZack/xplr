@@ -11,6 +11,13 @@ import (
 
 // inspired by https://github.com/savannahostrowski/tree-bubble/blob/main/tree.go
 
+type Mode int
+
+const (
+	ModeNormal = iota
+	ModeSearch
+)
+
 type TreeConfig struct {
 	Width  int
 	Height int
@@ -24,9 +31,14 @@ type Model struct {
 	Styles styles.Style
 	Nodes  []*nodes.Node
 
+	mode Mode
+
 	width  int
 	height int
 	cursor int
+
+	searchTerm    string
+	searchResults []int
 
 	currentNode *nodes.Node
 
@@ -44,6 +56,7 @@ func New(conf *TreeConfig, nodes []*nodes.Node) *Model {
 		Styles: conf.Style,
 		Nodes:  nodes,
 
+		mode:   ModeNormal,
 		width:  conf.Width,
 		height: conf.Height,
 
