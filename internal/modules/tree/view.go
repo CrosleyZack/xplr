@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	bottomLeft string = " └─"
+	bottomLeft string = " ╰─"
+	expandable string = " 🯒🯑"
 )
 
 // View returns the string representation of the tree
@@ -32,9 +33,12 @@ func (m *Model) renderTree() (string, error) {
 	f := func(node *nodes.Node, layer int) error {
 		var str string
 		// If we aren't at the root, we add the arrow shape to the string
+		shape := bottomLeft
+		if len(node.Children) > 0 && !node.Expand {
+			shape = expandable
+		}
 		if layer > 0 {
-			shape := strings.Repeat(" ", (layer-1)*2) + m.Styles.Shapes.Render(bottomLeft) + " "
-			str += shape
+			str += strings.Repeat(" ", (layer-1)*2) + m.Styles.Shapes.Render(shape) + " "
 		}
 		// Generate the correct index for the node
 		idx := count
